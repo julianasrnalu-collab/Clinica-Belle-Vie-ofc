@@ -207,6 +207,7 @@ export default function DepositPayment() {
       toast({
         title: "PIX gerado!",
         description: "Escaneie o QR Code ou copie o código PIX.",
+        duration: 3000,
       });
 
     } catch (err) {
@@ -234,11 +235,12 @@ export default function DepositPayment() {
   const handleSimulateApproval = async () => {
     if (!paymentId || !appointmentId) return;
     await Promise.all([
-      updatePaymentMutation.mutateAsync({ id: paymentId, data: { payment_status: "approved" } }),
       updateAppointmentMutation.mutateAsync({
         id: appointmentId,
-        data: { status: "confirmed", payment_status: "paid" },
-      }),
+        data: {
+          status: "confirmed",
+        },
+      })
     ]);
     setFlowStatus("approved");
     queryClient.invalidateQueries({ queryKey: ["my-appointments"] });
