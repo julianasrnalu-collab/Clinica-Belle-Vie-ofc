@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
         if (error) throw error;
-        
+
         if (session?.user) {
           await loadUserProfile(session.user);
         } else {
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
         .select('*')
         .eq('id', authUser.id)
         .single();
-        
+
       if (error && error.code !== 'PGRST116') { // PGRST116 is "Row not found"
         console.error("Error loading profile:", error);
       }
@@ -80,10 +80,19 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       setAuthError(null);
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
       if (error) throw error;
-      
-      await loadUserProfile(data.user);
+
+      console.log("PASSOU DO LOGIN");
+
+      // Comente esta linha apenas para teste:
+      // await loadUserProfile(data.user);
+
       return data.user;
     } catch (error) {
       const translated = translateError(error);
@@ -100,7 +109,7 @@ export const AuthProvider = ({ children }) => {
         email: userData.email,
         password: userData.password,
       });
-      
+
       if (error) throw error;
       if (!data.user) throw new Error("Falha ao criar usuário");
 
@@ -175,9 +184,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      isAuthenticated, 
+    <AuthContext.Provider value={{
+      user,
+      isAuthenticated,
       isLoadingAuth,
       authError,
       login,
@@ -186,7 +195,7 @@ export const AuthProvider = ({ children }) => {
       resetPasswordForEmail,
       updatePassword,
       navigateToLogin,
-      checkAppState: async () => {} // Kept for backwards compatibility with any remaining code
+      checkAppState: async () => { } // Kept for backwards compatibility with any remaining code
     }}>
       {children}
     </AuthContext.Provider>
