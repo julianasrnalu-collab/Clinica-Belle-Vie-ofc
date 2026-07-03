@@ -9,8 +9,8 @@ export default function Results() {
   const gallery = [
     {
       id: 1,
-      before_image_url: "https://images.unsplash.com/photo-1512495962040-62187f4749f7?w=500&q=80",
-      after_image_url: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=500&q=80",
+      before_image_url: "https://i.pinimg.com/736x/07/ff/28/07ff28ac61dd018b6c16260e4d6e36f0.jpg",
+      after_image_url: "https://i.pinimg.com/736x/b3/79/8a/b3798ad730938a736a7d1968de0f64e6.jpg",
       title: "Rejuvenescimento Facial",
       service_name: "Protocolo Clear Skin",
       description: "Protocolo combinando peeling químico e microagulhamento. Benefícios: Renovação celular, clareamento de manchas, melhora da textura e viço da pele em 4 sessões."
@@ -25,8 +25,8 @@ export default function Results() {
     },
     {
       id: 3,
-      before_image_url: "https://images.unsplash.com/photo-1620916297397-a4a5402a3c6c?w=500&q=80",
-      after_image_url: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=500&q=80",
+      before_image_url: "https://i.pinimg.com/736x/42/91/88/429188da525d6023eee3cf6a6c2451cf.jpg",
+      after_image_url: "https://i.pinimg.com/1200x/e9/31/1f/e9311f7861dbdc742faa63001d802f01.jpg",
       title: "Contorno Labial",
       service_name: "Preenchimento com Ácido Hialurônico",
       description: "Procedimento minimamente invasivo. Benefícios: Hidratação profunda, correção de assimetrias e aumento de volume com naturalidade e segurança."
