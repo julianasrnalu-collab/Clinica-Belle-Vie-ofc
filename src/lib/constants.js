@@ -1,6 +1,6 @@
 export const CLINIC_NAME = "BelleVie";
 export const CLINIC_PHONE = "+55 (11) 99999-0000";
-export const CLINIC_WHATSAPP = "5511999990000";
+export const CLINIC_WHATSAPP = "5521998160759";
 export const CLINIC_EMAIL = "contato@bellevie.com.br";
 export const CLINIC_ADDRESS = "Av. Paulista, 1000 - Sala 501, São Paulo - SP";
 
