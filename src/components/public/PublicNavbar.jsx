@@ -19,12 +19,12 @@ export default function PublicNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const { isAuthenticated, user, logout } = useAuth();
-  
+
   const handleLogout = async () => {
     await logout();
-    window.location.href = "/Home";
+    window.location.href = "/";
   };
-  
+
   const getDashboardRoute = () => {
     if (!isAuthenticated) return "/Login";
     return user?.profile?.role === 'client' ? "/DashboardMyAppointments" : "/Dashboard";
@@ -58,11 +58,10 @@ export default function PublicNavbar() {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-sm font-medium tracking-wide transition-colors ${
-                  location.pathname === link.path
+                className={`text-sm font-medium tracking-wide transition-colors ${location.pathname === link.path
                     ? "text-primary font-bold"
                     : "text-gray-600 hover:text-primary"
-                }`}
+                  }`}
               >
                 {link.label}
               </Link>
@@ -123,11 +122,10 @@ export default function PublicNavbar() {
                 key={link.path}
                 to={link.path}
                 onClick={() => setIsOpen(false)}
-                className={`block py-2.5 px-3 rounded-lg text-sm font-medium transition-colors ${
-                  location.pathname === link.path
+                className={`block py-2.5 px-3 rounded-lg text-sm font-medium transition-colors ${location.pathname === link.path
                     ? "text-primary bg-primary/10"
                     : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`}
+                  }`}
               >
                 {link.label}
               </Link>
