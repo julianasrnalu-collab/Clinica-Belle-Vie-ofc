@@ -80,14 +80,15 @@ export default function DepositPayment() {
         .insert([{
           client_id: data.client_id,
           professional_id: data.professional_id,
+          service_name: data.service_name,
           date: data.date,
           time: data.time,
           duration_minutes: data.duration_minutes,
           price: data.price,
           deposit_amount: data.deposit_amount,
           status: "pending_payment",
-          payment_status: "pending",
         }])
+
         .select()
         .single();
 
