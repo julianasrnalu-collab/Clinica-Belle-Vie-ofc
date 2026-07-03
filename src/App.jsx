@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import { Clock } from 'lucide-react';
@@ -47,6 +47,7 @@ import FloatingMenu from './components/public/FloatingMenu';
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, isAuthenticated, isLoadingAuth } = useAuth();
+  const navigate = useNavigate();
 
   if (isLoadingAuth) {
     return (
@@ -80,7 +81,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
           </div>
           <h2 className="text-2xl font-serif font-bold text-gray-900 mb-2">Acesso em Análise</h2>
           <p className="text-gray-500 mb-6 text-sm">Seu cadastro como profissional está sob análise da administração. Você receberá acesso assim que for aprovado.</p>
-          <button onClick={() => window.location.href = '/Login'} className="w-full bg-[hsl(350,35%,45%)] hover:bg-[hsl(350,35%,38%)] text-white rounded-xl py-3 font-semibold transition-colors">
+          <button onClick={() => navigate('/Login')} className="w-full bg-[hsl(350,35%,45%)] hover:bg-[hsl(350,35%,38%)] text-white rounded-xl py-3 font-semibold transition-colors">
             Voltar ao Login
           </button>
         </div>

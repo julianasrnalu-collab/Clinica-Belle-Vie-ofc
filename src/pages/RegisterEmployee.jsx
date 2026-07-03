@@ -3,7 +3,7 @@ import { useAuth } from '@/lib/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Briefcase, ArrowLeft } from 'lucide-react';
 import PublicNavbar from '@/components/public/PublicNavbar';
 import { motion } from 'framer-motion';
@@ -18,6 +18,7 @@ export default function RegisterEmployee() {
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -25,7 +26,7 @@ export default function RegisterEmployee() {
     setErrorMsg('');
     try {
       await register(formData, 'employee');
-      window.location.href = '/Dashboard';
+      navigate('/Dashboard');
     } catch (err) {
       setErrorMsg(err.message || 'Erro ao realizar cadastro.');
     } finally {

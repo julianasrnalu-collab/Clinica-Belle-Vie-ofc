@@ -160,14 +160,18 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-    setIsAuthenticated(false);
-    window.location.href = "/Login";
+    try {
+      await supabase.auth.signOut();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setUser(null);
+      setIsAuthenticated(false);
+    }
   };
 
   const navigateToLogin = () => {
-    window.location.href = "/Login";
+    // Deprecated: use useNavigate() in components instead
   };
 
   return (
