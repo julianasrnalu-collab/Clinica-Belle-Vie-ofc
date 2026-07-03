@@ -151,19 +151,54 @@ export default function DepositPayment() {
   // ── PIX flow ───────────────────────────────────────────────
 
   const handleGeneratePix = async () => {
-    setFlowStatus("processing");
+    const payment = await createPaymentMutation.mutateAsync({
+      appointment_id: appointment.id,
+      amount: deposit,
+      payment_method: "pix",
+      payment_status: "pending",
+    });
 
-    // Simula comunicação com o Mercado Pago
-    await new Promise(resolve => setTimeout(resolve, 2500));
+    setPaymentId(payment.id);
+    setAppointmentId(appointment.id);
 
-    setFlowStatus("approved");
+    const payment = await createPaymentMutation.mutateAsync({
+      appointment_id: appointment.id,
+      amount: deposit,
+      payment_method: "pix",
+      payment_status: "pending",
+    });
 
-    toast.success("Pagamento aprovado com sucesso!");
+    setPaymentId(payment.id);
+    setAppointmentId(appointment.id);
 
-    // Confirma automaticamente o agendamento
-    setTimeout(() => {
-      handleConfirmAppointment();
-    }, 1500);
+    try {
+      setFlowStatus("generating");
+
+
+      // Simula geração do PIX
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      setPixCode(
+        "00020126580014BR.GOV.BCB.PIX0114CHAVEPIXDEMO520400005303986540550.005802BR5925BELLEVIE CLINICA6009SAO PAULO62070503***6304ABCD"
+      );
+
+      // Pode ser qualquer imagem de QR Code para demonstração
+      setPixQrUrl("https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=PIX-DEMO");
+
+      setSecondsLeft(30 * 60);
+
+      setFlowStatus("waiting");
+
+      toast({
+        title: "PIX gerado!",
+        description: "Utilize o QR Code ou copie o código PIX.",
+      });
+
+    } catch (err) {
+      setErrorMsg("Erro ao gerar o PIX.");
+      setFlowStatus("failed");
+    }
+
   };
   const handlePixCopy = async () => {
     if (!pixCode) return;
