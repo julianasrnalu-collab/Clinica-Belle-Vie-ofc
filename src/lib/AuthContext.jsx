@@ -80,19 +80,10 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       setAuthError(null);
-
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
 
-      console.log("PASSOU DO LOGIN");
-
-      // Comente esta linha apenas para teste:
-      // await loadUserProfile(data.user);
-
+      await loadUserProfile(data.user);
       return data.user;
     } catch (error) {
       const translated = translateError(error);
