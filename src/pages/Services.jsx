@@ -13,7 +13,7 @@ export default function Services() {
 
   // MOCK DATA: Since the backend is not connected yet, we use mock data so the TCC presentation works perfectly.
   const services = [
-    { id: 1, name: "Limpeza de Pele Profunda", category: "facial", description: "Remoção de impurezas, cravos e células mortas, devolvendo o viço e a luminosidade da pele.", duration_minutes: 60, price: 150.00, image_url: "https://unsplash.com/pt-br/fotografias/vista-de-perto-da-mulher-que-se-deita-no-salao-de-spa-e-tem-procedimento-de-limpeza-do-rosto-ebcyVo7IPlQ" },
+    { id: 1, name: "Limpeza de Pele Profunda", category: "facial", description: "Remoção de impurezas, cravos e células mortas, devolvendo o viço e a luminosidade da pele.", duration_minutes: 60, price: 150.00, image_url: "https://i.pinimg.com/736x/ff/c9/15/ffc9158bbe95212745a1cce4a59dffff.jpg" },
     { id: 2, name: "Drenagem Linfática", category: "body", description: "Massagem corporal que estimula o sistema linfático, reduzindo o inchaço e a retenção de líquidos.", duration_minutes: 50, price: 120.00, image_url: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=500&q=80" },
     { id: 3, name: "Depilação a Laser", category: "laser", description: "Remoção definitiva dos pelos utilizando tecnologia de ponta, indolor e eficaz.", duration_minutes: 30, price: 80.00, image_url: "https://images.unsplash.com/photo-1519415510236-718bdfcd89c8?w=500&q=80" },
     { id: 4, name: "Preenchimento Labial", category: "injectables", description: "Procedimento estético com ácido hialurônico para dar volume, contorno e hidratação aos lábios.", duration_minutes: 45, price: 950.00, image_url: "https://images.unsplash.com/photo-1620916297397-a4a5402a3c6c?w=500&q=80" },
