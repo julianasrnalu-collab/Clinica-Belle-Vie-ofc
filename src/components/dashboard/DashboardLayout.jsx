@@ -46,15 +46,13 @@ export default function DashboardLayout() {
 
   const handleLogout = async () => {
     await logout();
-    navigate("/Home");
+    window.location.href = "/";
   };
-
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-100 transform transition-transform lg:translate-x-0 lg:static ${
-        sidebarOpen ? "translate-x-0" : "-translate-x-full"
-      }`}>
+      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-100 transform transition-transform lg:translate-x-0 lg:static ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}>
         <div className="h-full flex flex-col">
           <div className="h-16 flex items-center justify-between px-6 border-b border-gray-100">
             <Link to="/Home" className="font-['Playfair_Display'] text-xl font-semibold text-[hsl(350,35%,45%)]">
@@ -73,11 +71,10 @@ export default function DashboardLayout() {
                   key={link.path}
                   to={link.path}
                   onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                    isActive
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive
                       ? "bg-[hsl(350,35%,45%)]/10 text-[hsl(350,35%,45%)]"
                       : "text-gray-600 hover:bg-gray-50"
-                  }`}
+                    }`}
                 >
                   <link.icon className="w-5 h-5" />
                   {link.label}
