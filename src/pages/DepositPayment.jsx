@@ -151,21 +151,26 @@ export default function DepositPayment() {
   // ── PIX flow ───────────────────────────────────────────────
 
   const handleGeneratePix = async () => {
-  setPaymentStatus("processing");
+    setPaymentStatus("processing");
 
-  // Simula comunicação com o Mercado Pago
-  await new Promise(resolve => setTimeout(resolve, 2500));
+    // Simula comunicação com o Mercado Pago
+    await new Promise(resolve => setTimeout(resolve, 2500));
 
-  setPaymentStatus("approved");
+    setPaymentStatus("approved");
 
-  toast.success("Pagamento aprovado com sucesso!");
+    toast.success("Pagamento aprovado com sucesso!");
 
-  // Confirma automaticamente o agendamento
-  setTimeout(() => {
-    handleConfirmAppointment();
-  }, 1500);
-};
+    // Confirma automaticamente o agendamento
+    setTimeout(() => {
+      handleConfirmAppointment();
+    }, 1500);
+  };
+  const handlePixCopy = async () => {
+    if (!pixCode) return;
 
+    await navigator.clipboard.writeText(pixCode);
+    toast.success("Código PIX copiado!");
+  };
   // Demo only: simulate payment approved
   const handleSimulateApproval = async () => {
     if (!paymentId || !appointmentId) return;
@@ -354,11 +359,10 @@ export default function DepositPayment() {
                       <button
                         key={id}
                         onClick={() => setPaymentMethod(id)}
-                        className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${
-                          paymentMethod === id
+                        className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${paymentMethod === id
                             ? "border-[hsl(350,35%,45%)] bg-[hsl(350,35%,45%)]/5 shadow-sm"
                             : "border-gray-200 hover:border-gray-300 bg-white"
-                        }`}
+                          }`}
                       >
                         <Icon className={`w-6 h-6 ${paymentMethod === id ? "text-[hsl(350,35%,45%)]" : "text-gray-400"}`} />
                         <span className={`text-sm font-semibold ${paymentMethod === id ? "text-[hsl(350,35%,45%)]" : "text-gray-600"}`}>
