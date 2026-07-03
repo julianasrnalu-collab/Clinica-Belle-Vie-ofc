@@ -19,15 +19,24 @@ export default function BookAppointment() {
   const { user, isAuthenticated, isLoadingAuth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   const searchParams = new URLSearchParams(location.search);
   const initialProfessionalId = searchParams.get('professionalId');
+
+  useEffect(() => {
+    if (
+      isAuthenticated &&
+      user?.profile?.role === "employee"
+    ) {
+      navigate("/Dashboard", { replace: true });
+    }
+  }, [isAuthenticated, user, navigate]);
 
   const [step, setStep] = useState(0);
   const [services, setServices] = useState([]);
   const [professionals, setProfessionals] = useState([]);
   const [existingAppts, setExistingAppts] = useState([]);
-  
+
   const [selectedService, setSelectedService] = useState(null);
   const [selectedProfessional, setSelectedProfessional] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -53,7 +62,7 @@ export default function BookAppointment() {
         if (servicesRes.data) setServices(servicesRes.data);
         if (profilesRes.data) {
           setProfessionals(profilesRes.data);
-          
+
           if (initialProfessionalId) {
             const pro = profilesRes.data.find(p => p.id === initialProfessionalId);
             if (pro) {
@@ -81,7 +90,7 @@ export default function BookAppointment() {
           .eq('professional_id', selectedProfessional.id)
           .eq('date', format(selectedDate, "yyyy-MM-dd"))
           .neq('status', 'cancelled');
-          
+
         setExistingAppts(data || []);
       } catch (err) {
         console.error("Erro ao buscar horários", err);
@@ -96,8 +105,8 @@ export default function BookAppointment() {
   }, [selectedService, professionals]);
 
   // Mock availability for demo: Monday to Friday (1-5), 09:00 to 18:00
-  const availableDays = [1, 2, 3, 4, 5, 6]; 
-  
+  const availableDays = [1, 2, 3, 4, 5, 6];
+
   const timeSlots = useMemo(() => {
     if (!selectedDate || !selectedService || !selectedProfessional) return [];
     const dayOfWeek = getDay(selectedDate);
@@ -163,7 +172,7 @@ export default function BookAppointment() {
 
   const canDisableDate = (date) => {
     const today = new Date();
-    today.setHours(0,0,0,0);
+    today.setHours(0, 0, 0, 0);
     if (date < today) return true;
     const dow = getDay(date);
     return !availableDays.includes(dow);
@@ -188,9 +197,8 @@ export default function BookAppointment() {
           {STEPS.map((s, i) => (
             <React.Fragment key={s}>
               <div className={`flex items-center gap-2 ${i <= step ? "text-primary" : "text-gray-300"}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-colors ${
-                  i < step ? "bg-primary text-white" : i === step ? "bg-primary/10 text-primary border-2 border-primary" : "bg-gray-100 text-gray-400"
-                }`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-colors ${i < step ? "bg-primary text-white" : i === step ? "bg-primary/10 text-primary border-2 border-primary" : "bg-gray-100 text-gray-400"
+                  }`}>
                   {i < step ? <Check className="w-4 h-4" /> : i + 1}
                 </div>
                 <span className="hidden sm:inline text-sm font-medium">{s}</span>
@@ -211,9 +219,8 @@ export default function BookAppointment() {
                   {services.map((s) => (
                     <Card
                       key={s.id}
-                      className={`cursor-pointer transition-all duration-300 hover:shadow-md hover:-translate-y-1 ${
-                        selectedService?.id === s.id ? "ring-2 ring-primary bg-primary/5" : ""
-                      }`}
+                      className={`cursor-pointer transition-all duration-300 hover:shadow-md hover:-translate-y-1 ${selectedService?.id === s.id ? "ring-2 ring-primary bg-primary/5" : ""
+                        }`}
                       onClick={() => { setSelectedService(s); setSelectedDate(null); setSelectedTime(null); }}
                     >
                       <CardContent className="p-5">
@@ -243,9 +250,9 @@ export default function BookAppointment() {
                   disabled={!selectedService}
                   onClick={() => {
                     if (initialProfessionalId && selectedProfessional) {
-                       setStep(2); // Skip professional selection if they came from the team page
+                      setStep(2); // Skip professional selection if they came from the team page
                     } else {
-                       setStep(1);
+                      setStep(1);
                     }
                   }}
                   className="bg-primary hover:bg-primary/90 text-white rounded-full px-8 transition-all hover:-translate-y-1 hover:shadow-md"
@@ -264,9 +271,8 @@ export default function BookAppointment() {
                   {filteredProfessionals.map((p) => (
                     <Card
                       key={p.id}
-                      className={`cursor-pointer transition-all duration-300 hover:shadow-md hover:-translate-y-1 ${
-                        selectedProfessional?.id === p.id ? "ring-2 ring-primary bg-primary/5" : ""
-                      }`}
+                      className={`cursor-pointer transition-all duration-300 hover:shadow-md hover:-translate-y-1 ${selectedProfessional?.id === p.id ? "ring-2 ring-primary bg-primary/5" : ""
+                        }`}
                       onClick={() => { setSelectedProfessional(p); setSelectedDate(null); setSelectedTime(null); }}
                     >
                       <CardContent className="p-5 text-center">
@@ -334,11 +340,10 @@ export default function BookAppointment() {
                           <button
                             key={t}
                             onClick={() => setSelectedTime(t)}
-                            className={`py-2.5 rounded-lg text-sm font-medium transition-all ${
-                              selectedTime === t
-                                ? "bg-primary text-white shadow-md"
-                                : "bg-secondary text-gray-700 hover:bg-primary/10"
-                            }`}
+                            className={`py-2.5 rounded-lg text-sm font-medium transition-all ${selectedTime === t
+                              ? "bg-primary text-white shadow-md"
+                              : "bg-secondary text-gray-700 hover:bg-primary/10"
+                              }`}
                           >
                             {t}
                           </button>
