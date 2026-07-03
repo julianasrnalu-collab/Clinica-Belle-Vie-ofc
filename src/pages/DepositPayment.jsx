@@ -69,20 +69,27 @@ export default function DepositPayment() {
 
   const createAppointmentMutation = {
     mutateAsync: async (data) => {
+
+      const {
+        client_email,
+        ...appointmentData
+      } = data;
+
       const { data: result, error } = await supabase
-        .from('appointments')
+        .from("appointments")
         .insert([{
-          ...data,
+          ...appointmentData,
           status: "pending_payment",
           payment_status: "pending",
         }])
         .select()
         .single();
+
       if (error) throw error;
+
       return result;
     }
   };
-
   const createPaymentMutation = {
     mutateAsync: async (data) => {
       const { data: result, error } = await supabase
