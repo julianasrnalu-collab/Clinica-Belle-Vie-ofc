@@ -150,46 +150,21 @@ export default function DepositPayment() {
 
   // ── PIX flow ───────────────────────────────────────────────
 
-  const handleGeneratePix = useCallback(async () => {
-    if (flowStatus === "waiting" || flowStatus === "approved") return;
-    setFlowStatus("generating");
-    setErrorMsg("");
+  const handleGeneratePix = async () => {
+  setPaymentStatus("processing");
 
-    try {
-      const apptId = await ensureAppointment();
-      const { pixCode: code, pixQrUrl: qr, expiresAt, mpPaymentId } = await generatePixPayment({
-        amount: appointmentData.deposit_amount || 50,
-        appointmentId: apptId,
-        clientName: appointmentData.client_name,
-        clientEmail: appointmentData.client_email,
-      });
+  // Simula comunicação com o Mercado Pago
+  await new Promise(resolve => setTimeout(resolve, 2500));
 
-      const payment = await createPaymentMutation.mutateAsync({
-        appointment_id: apptId,
-        deposit_amount: appointmentData.deposit_amount || 50,
-        payment_method: "pix",
-        payment_status: "pending",
-        mp_payment_id: mpPaymentId,
-        pix_code: code,
-        pix_qr_url: qr,
-        pix_expires_at: expiresAt,
-      });
+  setPaymentStatus("approved");
 
-      setPaymentId(payment.id);
-      setPixCode(code);
-      setPixQrUrl(qr);
-      setSecondsLeft(PIX_EXPIRY_SECONDS);
-      setFlowStatus("waiting");
-    } catch (err) {
-      setErrorMsg("Erro ao gerar o código PIX. Tente novamente.");
-      setFlowStatus("failed");
-    }
-  }, [flowStatus, ensureAppointment, appointmentData, createPaymentMutation]);
+  toast.success("Pagamento aprovado com sucesso!");
 
-  const handlePixCopy = () => {
-    navigator.clipboard.writeText(pixCode);
-    toast({ title: "Código PIX copiado!", description: "Cole no app do seu banco para pagar." });
-  };
+  // Confirma automaticamente o agendamento
+  setTimeout(() => {
+    handleConfirmAppointment();
+  }, 1500);
+};
 
   // Demo only: simulate payment approved
   const handleSimulateApproval = async () => {
