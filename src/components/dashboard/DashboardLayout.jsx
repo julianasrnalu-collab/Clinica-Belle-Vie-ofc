@@ -47,7 +47,12 @@ export default function DashboardLayout() {
   // teste logout
 
   const handleLogout = async () => {
+    console.log("Cliquei em sair");
+
     await logout();
+
+    console.log("Logout realizado");
+
     window.location.href = "/";
   };
   return (
