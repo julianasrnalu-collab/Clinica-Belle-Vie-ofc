@@ -44,6 +44,8 @@ export default function DashboardLayout() {
   const role = user?.profile?.role || "client";
   const links = role === "admin" ? adminLinks : role === "employee" ? professionalLinks : clientLinks;
 
+  // teste logout
+
   const handleLogout = async () => {
     await logout();
     window.location.href = "/";
@@ -72,8 +74,8 @@ export default function DashboardLayout() {
                   to={link.path}
                   onClick={() => setSidebarOpen(false)}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive
-                      ? "bg-[hsl(350,35%,45%)]/10 text-[hsl(350,35%,45%)]"
-                      : "text-gray-600 hover:bg-gray-50"
+                    ? "bg-[hsl(350,35%,45%)]/10 text-[hsl(350,35%,45%)]"
+                    : "text-gray-600 hover:bg-gray-50"
                     }`}
                 >
                   <link.icon className="w-5 h-5" />
