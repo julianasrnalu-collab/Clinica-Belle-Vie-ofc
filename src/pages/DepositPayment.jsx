@@ -151,12 +151,12 @@ export default function DepositPayment() {
   // ── PIX flow ───────────────────────────────────────────────
 
   const handleGeneratePix = async () => {
-    setPaymentStatus("processing");
+    setFlowStatus("processing");
 
     // Simula comunicação com o Mercado Pago
     await new Promise(resolve => setTimeout(resolve, 2500));
 
-    setPaymentStatus("approved");
+    setFlowStatus("approved");
 
     toast.success("Pagamento aprovado com sucesso!");
 
@@ -360,8 +360,8 @@ export default function DepositPayment() {
                         key={id}
                         onClick={() => setPaymentMethod(id)}
                         className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${paymentMethod === id
-                            ? "border-[hsl(350,35%,45%)] bg-[hsl(350,35%,45%)]/5 shadow-sm"
-                            : "border-gray-200 hover:border-gray-300 bg-white"
+                          ? "border-[hsl(350,35%,45%)] bg-[hsl(350,35%,45%)]/5 shadow-sm"
+                          : "border-gray-200 hover:border-gray-300 bg-white"
                           }`}
                       >
                         <Icon className={`w-6 h-6 ${paymentMethod === id ? "text-[hsl(350,35%,45%)]" : "text-gray-400"}`} />
