@@ -177,11 +177,11 @@ export default function DepositPayment() {
       }
 
       // Salva o ID do agendamento
-      setAppointmentId(appointment.id);
+      setAppointmentId(appointment);
 
       // Cria o registro de pagamento
       const payment = await createPaymentMutation.mutateAsync({
-        appointment_id: appointment.id,
+        appointment_id: appointment,
         amount: deposit,
         payment_method: "pix",
         payment_status: "pending",
