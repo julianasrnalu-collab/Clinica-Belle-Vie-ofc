@@ -151,39 +151,40 @@ export default function DepositPayment() {
   // ── PIX flow ───────────────────────────────────────────────
 
   const handleGeneratePix = async () => {
-    const payment = await createPaymentMutation.mutateAsync({
-      appointment_id: appointment.id,
-      amount: deposit,
-      payment_method: "pix",
-      payment_status: "pending",
-    });
-
-    setPaymentId(payment.id);
-    setAppointmentId(appointment.id);
-
-    const payment = await createPaymentMutation.mutateAsync({
-      appointment_id: appointment.id,
-      amount: deposit,
-      payment_method: "pix",
-      payment_status: "pending",
-    });
-
-    setPaymentId(payment.id);
-    setAppointmentId(appointment.id);
-
     try {
+      setErrorMsg("");
       setFlowStatus("generating");
 
+      // Cria o agendamento caso ainda não exista
+      const appointment = await ensureAppointment();
+
+      if (!appointment) {
+        throw new Error("Não foi possível criar o agendamento.");
+      }
+
+      // Salva o ID do agendamento
+      setAppointmentId(appointment.id);
+
+      // Cria o registro de pagamento
+      const payment = await createPaymentMutation.mutateAsync({
+        appointment_id: appointment.id,
+        amount: deposit,
+        payment_method: "pix",
+        payment_status: "pending",
+      });
+
+      setPaymentId(payment.id);
 
       // Simula geração do PIX
       await new Promise(resolve => setTimeout(resolve, 1500));
 
       setPixCode(
-        "00020126580014BR.GOV.BCB.PIX0114CHAVEPIXDEMO520400005303986540550.005802BR5925BELLEVIE CLINICA6009SAO PAULO62070503***6304ABCD"
+        "00020126580014BR.GOV.BCB.PIX0114PIXDEMO520400005303986540550.005802BR5925BELLE VIE6009SAO PAULO62070503***6304ABCD"
       );
 
-      // Pode ser qualquer imagem de QR Code para demonstração
-      setPixQrUrl("https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=PIX-DEMO");
+      setPixQrUrl(
+        "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=PIX-DEMO"
+      );
 
       setSecondsLeft(30 * 60);
 
@@ -191,15 +192,24 @@ export default function DepositPayment() {
 
       toast({
         title: "PIX gerado!",
-        description: "Utilize o QR Code ou copie o código PIX.",
+        description: "Escaneie o QR Code ou copie o código PIX.",
       });
 
     } catch (err) {
-      setErrorMsg("Erro ao gerar o PIX.");
-      setFlowStatus("failed");
-    }
+      console.error(err);
 
+      setErrorMsg(err.message || "Erro ao gerar PIX.");
+
+      setFlowStatus("failed");
+
+      toast({
+        title: "Erro",
+        description: "Não foi possível gerar o PIX.",
+        variant: "destructive",
+      });
+    }
   };
+
   const handlePixCopy = async () => {
     if (!pixCode) return;
 
