@@ -15,6 +15,8 @@ const navLinks = [
   { label: "Contato", path: "/Contact" },
 ];
 
+const { user } = useAuth();
+
 export default function PublicNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
@@ -59,8 +61,8 @@ export default function PublicNavbar() {
                 key={link.path}
                 to={link.path}
                 className={`text-sm font-medium tracking-wide transition-colors ${location.pathname === link.path
-                    ? "text-primary font-bold"
-                    : "text-gray-600 hover:text-primary"
+                  ? "text-primary font-bold"
+                  : "text-gray-600 hover:text-primary"
                   }`}
               >
                 {link.label}
@@ -68,96 +70,101 @@ export default function PublicNavbar() {
             ))}
           </div>
 
-          <div className="hidden lg:flex items-center gap-3">
-            <Link to="/BookAppointment">
-              <Button className="rounded-full px-6 text-sm font-semibold bg-primary hover:bg-primary/90 text-white transition-all">
-                Agendar
+          {user?.profile?.role !== "employee" && (
+            <div className="hidden lg:flex items-center gap-3">
+              <Link to="/BookAppointment">
+                <Button className="rounded-full px-6 text-sm font-semibold bg-primary hover:bg-primary/90 text-white transition-all">
+                  Agendar
+                </Button>
+              </Link>
+            </div>
+          )}
+          {isAuthenticated ? (
+            <div className="flex items-center gap-2">
+              <Link to={getDashboardRoute()}>
+                <Button variant="outline" className="rounded-full px-6 text-sm border-primary text-primary hover:bg-primary/5 transition-all">
+                  Minha Conta
+                </Button>
+              </Link>
+              <Button variant="ghost" onClick={handleLogout} className="rounded-full px-4 text-sm text-gray-500 hover:text-red-600 transition-all">
+                Sair
+              </Button>
+            </div>
+          ) : (
+            <Link to={getDashboardRoute()}>
+              <Button variant="outline" className="rounded-full px-6 text-sm border-primary text-primary hover:bg-primary/5 transition-all">
+                Entrar
+              </Button>
+            </Link>
+          )}
+        </div>
+
+        <button
+          className="lg:hidden p-2 rounded-lg text-gray-700 transition-colors"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? "Fechar menu" : "Abrir menu"}
+        >
+          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+      </div>
+    </div>
+
+      {
+    isOpen && (
+      <div className="lg:hidden bg-white border-t border-gray-100 shadow-lg">
+        {/* Mobile logo strip */}
+        <div className="flex items-center gap-2 px-5 py-4 border-b border-gray-100">
+          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+            <span className="font-serif text-sm font-bold text-white">B</span>
+          </div>
+          <div>
+            <p className="font-serif text-base font-bold text-gray-900 leading-none">{CLINIC_NAME}</p>
+            <p className="text-[9px] uppercase tracking-widest text-accent">Clínica Estética</p>
+          </div>
+        </div>
+        <div className="px-5 py-4 space-y-1">
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              onClick={() => setIsOpen(false)}
+              className={`block py-2.5 px-3 rounded-lg text-sm font-medium transition-colors ${location.pathname === link.path
+                ? "text-primary bg-primary/10"
+                : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <div className="pt-4 flex flex-col gap-2 border-t border-gray-100">
+            <Link to="/BookAppointment" onClick={() => setIsOpen(false)}>
+              <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-full font-semibold">
+                Agendar Consulta
               </Button>
             </Link>
             {isAuthenticated ? (
-              <div className="flex items-center gap-2">
-                <Link to={getDashboardRoute()}>
-                  <Button variant="outline" className="rounded-full px-6 text-sm border-primary text-primary hover:bg-primary/5 transition-all">
+              <>
+                <Link to={getDashboardRoute()} onClick={() => setIsOpen(false)}>
+                  <Button variant="outline" className="w-full rounded-full border-primary text-primary hover:bg-primary/5">
                     Minha Conta
                   </Button>
                 </Link>
-                <Button variant="ghost" onClick={handleLogout} className="rounded-full px-4 text-sm text-gray-500 hover:text-red-600 transition-all">
-                  Sair
+                <Button variant="ghost" onClick={handleLogout} className="w-full rounded-full text-gray-500 hover:text-red-600">
+                  Sair da Conta
                 </Button>
-              </div>
+              </>
             ) : (
-              <Link to={getDashboardRoute()}>
-                <Button variant="outline" className="rounded-full px-6 text-sm border-primary text-primary hover:bg-primary/5 transition-all">
+              <Link to={getDashboardRoute()} onClick={() => setIsOpen(false)}>
+                <Button variant="outline" className="w-full rounded-full border-primary text-primary hover:bg-primary/5">
                   Entrar
                 </Button>
               </Link>
             )}
           </div>
-
-          <button
-            className="lg:hidden p-2 rounded-lg text-gray-700 transition-colors"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label={isOpen ? "Fechar menu" : "Abrir menu"}
-          >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
         </div>
       </div>
-
-      {isOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-100 shadow-lg">
-          {/* Mobile logo strip */}
-          <div className="flex items-center gap-2 px-5 py-4 border-b border-gray-100">
-            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-              <span className="font-serif text-sm font-bold text-white">B</span>
-            </div>
-            <div>
-              <p className="font-serif text-base font-bold text-gray-900 leading-none">{CLINIC_NAME}</p>
-              <p className="text-[9px] uppercase tracking-widest text-accent">Clínica Estética</p>
-            </div>
-          </div>
-          <div className="px-5 py-4 space-y-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => setIsOpen(false)}
-                className={`block py-2.5 px-3 rounded-lg text-sm font-medium transition-colors ${location.pathname === link.path
-                    ? "text-primary bg-primary/10"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                  }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <div className="pt-4 flex flex-col gap-2 border-t border-gray-100">
-              <Link to="/BookAppointment" onClick={() => setIsOpen(false)}>
-                <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-full font-semibold">
-                  Agendar Consulta
-                </Button>
-              </Link>
-              {isAuthenticated ? (
-                <>
-                  <Link to={getDashboardRoute()} onClick={() => setIsOpen(false)}>
-                    <Button variant="outline" className="w-full rounded-full border-primary text-primary hover:bg-primary/5">
-                      Minha Conta
-                    </Button>
-                  </Link>
-                  <Button variant="ghost" onClick={handleLogout} className="w-full rounded-full text-gray-500 hover:text-red-600">
-                    Sair da Conta
-                  </Button>
-                </>
-              ) : (
-                <Link to={getDashboardRoute()} onClick={() => setIsOpen(false)}>
-                  <Button variant="outline" className="w-full rounded-full border-primary text-primary hover:bg-primary/5">
-                    Entrar
-                  </Button>
-                </Link>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-    </nav>
+    )
+  }
+    </nav >
   );
 }
